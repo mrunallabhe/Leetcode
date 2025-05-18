@@ -1,33 +1,27 @@
 class Solution {
     public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
-        Set<Integer> list1 = new HashSet<>();
-        Set<Integer> list2 = new HashSet<>();
-
-        for (int i = 0; i < nums1.length; i++) {
-            list1.add(nums1[i]);
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set2 = new HashSet<>();
+        
+        for (int num : nums1) {
+            set1.add(num);
         }
-        for (int i = 0; i < nums2.length; i++) {
-            list2.add(nums2[i]);
+        
+        for (int num : nums2) {
+            set2.add(num);
         }
-
-        ArrayList<Integer> result1 = new ArrayList<>();
-        ArrayList<Integer> result2 = new ArrayList<>();
+        
+        // Create copies to perform set difference
+        Set<Integer> onlyInNums1 = new HashSet<>(set1);
+        Set<Integer> onlyInNums2 = new HashSet<>(set2);
+        
+        onlyInNums1.removeAll(set2);  // Elements in nums1 but not in nums2
+        onlyInNums2.removeAll(set1);  // Elements in nums2 but not in nums1
+        
         List<List<Integer>> result = new ArrayList<>();
-
-        for (int k = 0; k < nums1.length; k++) {
-            if (!list2.contains(nums1[k]) && !result1.contains(nums1[k])) {
-                result1.add(nums1[k]);
-            }
-        }
-
-        for (int l = 0; l < nums2.length; l++) {
-            if (!list1.contains(nums2[l]) && !result2.contains(nums2[l])) {
-                result2.add(nums2[l]);
-            }
-        }
-
-        result.add(result1);
-        result.add(result2);
+        result.add(new ArrayList<>(onlyInNums1));
+        result.add(new ArrayList<>(onlyInNums2));
+        
         return result;
     }
 }
