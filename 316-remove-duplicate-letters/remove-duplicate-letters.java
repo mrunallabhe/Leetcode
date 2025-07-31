@@ -1,23 +1,36 @@
+import java.util.*;
+
 class Solution {
     public String removeDuplicateLetters(String s) {
-        if (s.isEmpty()) return "";
-
-        int[] count = new int[26];
-        for (char c : s.toCharArray()) count[c - 'a']++;
-
-        int pos = 0; // Position of smallest lex character
+        int[] lastIndex = new int[26]; // Store last occurrence index of each char
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) < s.charAt(pos)) {
-                pos = i;
-            }
-            count[s.charAt(i) - 'a']--;
-
-            if (count[s.charAt(i) - 'a'] == 0) break;
+            lastIndex[s.charAt(i) - 'a'] = i;
         }
 
-        char ch = s.charAt(pos);
-        String remaining = s.substring(pos + 1).replaceAll("" + ch, "");
+        boolean[] seen = new boolean[26]; // Keep track of characters in the result
+        Stack<Character> stack = new Stack<>();
 
-        return ch + removeDuplicateLetters(remaining);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (seen[c - 'a']) continue; // Already in stack, skip
+
+            // Maintain lexicographical order
+            while (!stack.isEmpty() && c < stack.peek() && lastIndex[stack.peek() - 'a'] > i) {
+                char removed = stack.pop();
+                seen[removed - 'a'] = false;
+            }
+
+            stack.push(c);
+            seen[c - 'a'] = true;
+        }
+
+        // Build the result
+        StringBuilder result = new StringBuilder();
+        for (char ch : stack) {
+            result.append(ch);
+        }
+
+        return result.toString();
     }
 }
