@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         Stack<Integer> st = new Stack<>();
