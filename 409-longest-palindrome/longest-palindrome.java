@@ -1,17 +1,29 @@
 class Solution {
     public int longestPalindrome(String s) {
-        if(s==null || s.length()==0) return 0;
-        HashSet<Character> hs = new HashSet<Character>();
+
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
         int count = 0;
-        for(int i=0; i<s.length(); i++){
-            if(hs.contains(s.charAt(i))){
-                hs.remove(s.charAt(i));
-                count++;
-            }else{
-                hs.add(s.charAt(i));
+        boolean isOdd = false;
+
+        for (Map.Entry<Character, Integer> it : map.entrySet()) {
+
+            int freq = it.getValue();
+
+            if (freq % 2 == 0) {
+                count += freq;
+            } else {
+                count += freq - 1;  
+                if (!isOdd) {       
+                    count += 1;    
+                    isOdd = true;
+                }
             }
         }
-        if(!hs.isEmpty()) return count*2+1;
-        return count*2;
-}
+
+        return count;
+    }
 }
