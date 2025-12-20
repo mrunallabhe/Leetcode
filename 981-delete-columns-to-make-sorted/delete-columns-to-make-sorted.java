@@ -1,20 +1,25 @@
 class Solution {
     public int minDeletionSize(String[] strs) {
-        int deleteCount = 0;
-        int n = strs.length;
-        int m = strs[0].length();
-        for (int i = 0; i < m; i++) {
-            // Iterate through each element in the column
-            for (int j = 1; j < n; j++) {
-                // If the current element is lexicographically smaller than the previous element,
-                // increment the delete count and break out of the loop
-                if (strs[j].charAt(i) < strs[j - 1].charAt(i)) {
-                    deleteCount++;
-                    break;
-                }
-            }
+        int index=strs[0].length();
+        int rows=strs.length;
+        int count=0;
+        int j=0;
+        String copy;
+        while(j<index){
+            StringBuilder str=new StringBuilder();
+        for(int i=0;i<rows;i++){
+            str.append(strs[i].charAt(j));
+            
         }
-        // Return the delete count
-        return deleteCount;
+        copy=str.toString();
+        j++;
+        char[] ch=str.toString().toCharArray();
+        Arrays.sort(ch);
+
+        if(!copy.equals(new String(ch))){
+            count++;
+        }
+        }
+        return count;
     }
 }
