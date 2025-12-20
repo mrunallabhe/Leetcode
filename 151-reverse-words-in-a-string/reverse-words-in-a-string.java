@@ -5,7 +5,7 @@ class Solution {
         StringBuilder st=new StringBuilder();
         for(int i=n-1;i>=0;i--){
             st.append(str[i]);
-            if(i>0){
+            if(i!=0){
             st.append(" ");
             }
         }
