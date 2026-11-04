@@ -1,17 +1,18 @@
-/* Write your T-SQL query statement below */
---My SQL
 SELECT
-    d.name AS Department,
-    e.name AS Employee,
-    e.salary AS Salary
-FROM
-    Employee e
-    JOIN Department d ON e.departmentId = d.id
-WHERE
-    (
-        SELECT COUNT(DISTINCT salary)
-        FROM Employee e2
-        WHERE e2.departmentId = e.departmentId AND e2.salary >= e.salary
-    ) <= 3
-ORDER BY
-    Department, Salary DESC;
+    Department,
+    Employee,
+    salary
+FROM (
+    SELECT
+        d.name AS Department,
+        e.name AS Employee,
+        e.salary,
+        DENSE_RANK() OVER (
+            PARTITION BY d.id
+            ORDER BY e.salary DESC
+        ) AS ranked_salaries
+    FROM employee e
+    JOIN department d
+        ON e.departmentid = d.id
+) AS ranked_employees
+WHERE ranked_salaries <= 3;
